@@ -1,0 +1,40 @@
+#CASCADE_ROOT = ${CASCADE_ROOT}
+INCDIR:=$(CASCADE_ROOT)/build_output/inc/
+LIBDIR:=$(CASCADE_ROOT)/build_output/lib/
+LIBSRC:=$(CASCADE_ROOT)
+CLASSPATH:=$(CASCADE_ROOT)/build_output/class/antlr-3.1.3.jar:$(CASCADE_ROOT)/build_output/class/translator.jar
+
+TARGET  = fluidanimate
+SRC     = cascade.cpp 
+CSRC    = $(SRC)
+CXXFLAGS += -DCASCADE_VERSION 
+CXXFLAGS +=-I$(INCDIR)
+CXXFLAGS += -DBATCH_SIZE=1
+LIBS	+= -L$(LIBDIR) -lcascade -lpthread -L/usr/lib64 -L/usr/lib
+
+#timer stuff
+#CXXFLAGS += -DSAMPLES_PER_FRAME=10000
+#CXXFLAGS += -DMICROBENCHMARKS -DHRTIMER
+
+#sigs
+#CXXFLAGS += -DMAX_GENERATIONS=1000 -DSIGNATURES_GENERATIONS -DCountConflicts -DSIG_INDEX -DPROC_64BIT
+
+
+
+
+
+all:	cascade cmp
+
+cascade: $(CSRC)
+	$(CXX) $(CXXFLAGS) $(CSRC) $(LDFLAGS) $(LIBS) -o $(TARGET)
+
+cmp: cmp.cpp
+	rm -rf cmp
+	$(CXX) cmp.cpp -o cmp
+
+cascade.cpp: fluidanimate.cdml
+	java -cp "$(CLASSPATH)" Translator $< -o $@
+
+clean:
+	rm -rf $(TARGET)
+	rm -rf cmp
