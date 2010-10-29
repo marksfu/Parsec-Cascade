@@ -615,7 +615,7 @@ void AdvanceFrame()
 
 int main(int argc, char *argv[])
 {
-	omp_set_num_threads(1);
+	
 #ifdef PARSEC_VERSION
 #define __PARSEC_STRING(x) #x
 #define __PARSEC_XSTRING(x) __PARSEC_STRING(x)
@@ -635,12 +635,8 @@ int main(int argc, char *argv[])
 
 	int threadnum = atoi(argv[1]);
 	int framenum = atoi(argv[2]);
-
+	omp_set_num_threads(argv[1]);
 	//Check arguments
-	if(threadnum != 1) {
-		std::cerr << "<threadnum> must be 1 (serial version)" << std::endl;
-		return -1;
-	}
 	if(framenum < 1) {
 		std::cerr << "<framenum> must at least be 1" << std::endl;
 		return -1;
