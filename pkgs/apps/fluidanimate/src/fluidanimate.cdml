@@ -799,11 +799,11 @@ execution:
 		receives: int ck;
 	{
 		-- create fake dependency as undlaying array is flat
-		--if (false) {
-		--	foo[ck-1] = 1;
-		--	foo[ck] = 1;
-		--	foo[ck+1] = 1;
-		--}
+		if (false) {
+			foo[ck-1] = 1;
+			foo[ck] = 1;
+			foo[ck+1] = 1;
+		}
 		ComputeForcesEnd(ck);
 	}
 	
